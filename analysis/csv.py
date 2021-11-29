@@ -13,8 +13,8 @@ def launch_analysis(data_file):
     directory = path.dirname(__file__)
     path_to_file = path.join(directory, "../data", data_file)
 
-    with open(path_to_file, "r") as f:
-        preview = f.readline()
+    with open(path_to_file, "r") as file:
+        preview = file.readline()
 
     print(f"afficher previsualisation du fichier csv : {preview}")
 
