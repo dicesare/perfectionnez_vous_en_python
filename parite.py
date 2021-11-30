@@ -7,7 +7,7 @@ from analysis import xml as x_an, csv as c_an
 """
 documnet argparse --> https://docs.python.org/3/library/argparse.html
 """
-log.basicConfig(level=log.DEBUG)
+log.basicConfig(level=log.INFO)
 
 
 def parse_arguments():
