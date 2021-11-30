@@ -16,6 +16,8 @@ def parse_arguments():
                         help="""Type of file to analyse. Is it a CSV or an XML ?""")
     parser.add_argument("-d", "--datafile",
                         help="""CSV file containing pieces of information about the members of parliament""")
+    parser.add_argument("-i", "--info", action="store_true",
+                        help="""information about the file""")
     return parser.parse_args()
 
 
@@ -27,10 +29,10 @@ def main():
             raise Warning("You must indicate a datafile")
         else:
             try:
-                if args.extension == "csv":
-                    c_an.launch_analysis("current_mps.csv")
-                elif args.extension == "xml":
-                    x_an.launch_analysis("SyceronBrut.xml")
+                if args.extension == "xml":
+                    x_an.launch_analysis(datafile)
+                elif args.extension == "csv":
+                    c_an.launch_analysis(datafile, args.info)
             except FileNotFoundError as e:
                 log.error(f"the File is not found : {e}")
             finally:

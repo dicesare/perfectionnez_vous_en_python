@@ -12,8 +12,11 @@ open() -->  https://docs.python.org/3/library/functions.html#open
 
 class SetOfParliamentMembers:
     def __init__(self, name):
-        self.dataframe = None
+        # self.dataframe = None
         self.name = name
+
+    def __repr__(self):
+        return f"SetOfParliamentMember: {len(self.dataframe)} members()"
 
     def data_from_csv(self, csv_file):
         self.dataframe = pda.read_csv(csv_file, sep=";")
@@ -59,13 +62,15 @@ class SetOfParliamentMembers:
         return result
 
 
-def launch_analysis(data_file, by_party=False):
+def launch_analysis(data_file, by_party=False, info=False):
     sopm = SetOfParliamentMembers("All MPs")
     sopm.data_from_csv(path.join("data", data_file))
     sopm.display_chart()
     if by_party:
         for party, s in sopm.split_by_political_party().items():
             s.display_chart()
+    if info:
+        print(sopm)
 
 
 """    
