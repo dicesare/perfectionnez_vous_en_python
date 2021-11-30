@@ -12,7 +12,7 @@ open() -->  https://docs.python.org/3/library/functions.html#open
 
 class SetOfParliamentMembers:
     def __init__(self, name):
-        # self.dataframe = None
+        self.dataframe = None
         self.name = name
 
     def __repr__(self):
