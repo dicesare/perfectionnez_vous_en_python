@@ -1,7 +1,5 @@
 import pprint
-import re
 from os import path
-import logging as log
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -106,13 +104,13 @@ def launch_analysis(data_file,
     if index is not None:
         index = int(index)
         print()
-        pprint.pprint(sopm[index]) # prints the dict a nice way
+        pprint.pprint(sopm[index])  # prints the dict a nice way
 
     if group_fist is not None:
         groupfirst = int(group_fist)
         parties = sopm.split_by_political_party()
         parties = parties.values()
-        parties_by_size = sorted(parties, reverse = True)
+        parties_by_size = sorted(parties, reverse=True)
 
         print()
         print("Info: the {} biggest groups are :".format(groupfirst))
@@ -134,6 +132,8 @@ def launch_analysis(data_file,
             print("{} : Distribution by party:".format(age_group))
             print()
             pprint.pprint(s.number_mp_by_party())
+
+
 """
     path_to_file = path.join("data", data_file)
 

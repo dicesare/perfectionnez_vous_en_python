@@ -2,7 +2,6 @@
 import argparse
 import logging as log
 import re
-import sys
 
 from analysis import xml as x_an, csv as c_an
 
