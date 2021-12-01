@@ -1,5 +1,5 @@
+import pprint
 from os import path
-import logging as log
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -18,6 +18,17 @@ class SetOfParliamentMembers:
     def __repr__(self):
         return f"SetOfParliamentMember: {len(self.dataframe)} members()"
 
+    def __iter__(self):
+        self.iterator_state = 0
+        return self
+
+    def __next__(self):
+        if self.iterator_state >= len(self):
+            raise StopIteration()
+        result = self[self.iterator_state]
+        self.iterator_state += 1
+        return result
+
     def data_from_csv(self, csv_file):
         self.dataframe = pda.read_csv(csv_file, sep=";")
         pass
@@ -34,7 +45,6 @@ class SetOfParliamentMembers:
         counts = np.array(counts)
         nb_mps = counts.sum()
         proportions = counts / nb_mps
-
         labels = [f"Female ({counts[0]})", f"Male ({counts[1]})"]
 
         fig, ax = plt.subplots()
@@ -62,18 +72,69 @@ class SetOfParliamentMembers:
         return result
 
 
-def launch_analysis(data_file, by_party=False, info=False):
+def launch_analysis(data_file,
+                    by_party=False,
+                    info=False,
+                    display_names=False,
+                    search_name=None,
+                    index=None,
+                    group_fist=None,
+                    by_age=None):
     sopm = SetOfParliamentMembers("All MPs")
     sopm.data_from_csv(path.join("data", data_file))
     sopm.display_chart()
+    # print(f"info : {info}")
     if by_party:
         for party, s in sopm.split_by_political_party().items():
             s.display_chart()
+
     if info:
+        print()
+        print(repr(sopm))
+
+    if display_names:
+        print()
         print(sopm)
 
+    if search_name is not None:
+        is_present = search_name in sopm
+        print()
+        print("Testing if {} is present: {}".format(search_name, is_present))
 
-"""    
+    if index is not None:
+        index = int(index)
+        print()
+        pprint.pprint(sopm[index])  # prints the dict a nice way
+
+    if group_fist is not None:
+        groupfirst = int(group_fist)
+        parties = sopm.split_by_political_party()
+        parties = parties.values()
+        parties_by_size = sorted(parties, reverse=True)
+
+        print()
+        print("Info: the {} biggest groups are :".format(groupfirst))
+        for p in parties_by_size[0:groupfirst]:
+            print(p.name)
+
+        s = sum(parties_by_size[0:groupfirst])
+
+        s.display_chart()
+
+    if by_age is not None:
+        by_age = int(by_age)  # by_age was still a string, passed by the command line
+        for age_group, s in sopm.split_by_age(by_age).items():
+            print()
+            print("-" * 50)
+            print(age_group + ":")
+            s.display_chart()
+            print()
+            print("{} : Distribution by party:".format(age_group))
+            print()
+            pprint.pprint(s.number_mp_by_party())
+
+
+"""
     path_to_file = path.join("data", data_file)
 
     directory = path.dirname(__file__)
